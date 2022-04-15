@@ -5,7 +5,7 @@
   >
     <div class="login-box">
       <div class="title">账号登陆</div>
-      <el-form :model="form" label-width="80px">
+      <el-form :model="form" label-width="80px" style="width: 90%">
         <el-form-item label="用户名" prop="username">
           <el-input
             placeholder="请输入用户名"
@@ -33,33 +33,39 @@
 </template>
 <script  lang="ts" setup>
 import { reactive } from "vue";
+import { login } from "../api/login";
 const bgImage = new URL(`../assets/bg1@2x.png`, import.meta.url).href;
 const form = reactive({
-  username: null,
-  password: null,
+  username: "",
+  password: "",
 });
 const submitForm = () => {
-  console.log("submit!");
+  login(form).then((res: any) => {
+    console.log(res);
+  });
 };
 </script>
-<style lang="sass" scoped>
-.content-background
-  background-repeat: no-repeat
-  background-size: cover
-  width: 100vw
-  height: 100vh
-  .login-box
-    position: relative
-    left: 60%
-    top: 15%
-    width: 425px
-    height: 500px
-    background: #FFFFFF
-    border-radius: 3px
-    .title
-      padding: 40px 0 70px 30px
-      font-size: 18px
-      font-family: Microsoft YaHei
-      font-weight: 400
-      color: #333333
+<style lang="scss" scoped>
+.content-background {
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  .login-box {
+    position: relative;
+    left: 60%;
+    top: 20%;
+    width: 425px;
+    height: 380px;
+    background: #ffffff;
+    border-radius: 3px;
+  }
+  .title {
+    padding: 40px 0 70px 30px;
+    font-size: 18px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #333333;
+  }
+}
 </style>

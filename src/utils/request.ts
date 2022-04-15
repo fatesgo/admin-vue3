@@ -1,11 +1,8 @@
 import axios from 'axios'
 import {
     getToken
-} from '@/utils/auth.ts'
-const service = axios.create({
-    baseURL: import.meta.env.VITE_APP_BASE_ API,
-    timeout: 60000,
-})
+} from './auth'
+const service = axios.create()
 
 //请求拦截器
 service.interceptors.request.use(
