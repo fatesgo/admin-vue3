@@ -43,7 +43,7 @@ import {
   Menu as IconMenu,
   Location,
   Setting,
-} from "@element-plus/icons";
+} from "@element-plus/icons-vue";
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
