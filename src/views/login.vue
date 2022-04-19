@@ -1,8 +1,5 @@
 <template>
-  <div
-    :style="{ backgroundImage: 'url(' + bgImage + ')' }"
-    class="content-background"
-  >
+  <div class="content-background">
     <div class="login-box">
       <div class="title">账号登陆</div>
       <el-form :model="form" label-width="80px" style="width: 90%">
@@ -33,15 +30,19 @@
 </template>
 <script  lang="ts" setup>
 import { reactive } from "vue";
-import { login } from "../api/login";
-const bgImage = new URL(`../assets/bg1@2x.png`, import.meta.url).href;
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+const store = useStore();
+const router = useRouter();
 const form = reactive({
-  username: "",
-  password: "",
+  username: null,
+  password: null,
 });
 const submitForm = () => {
-  login(form).then((res: any) => {
-    console.log(res);
+  store.dispatch("Login", form).then(() => {
+    router.replace({
+      path: "/index",
+    });
   });
 };
 </script>
@@ -49,6 +50,7 @@ const submitForm = () => {
 .content-background {
   background-repeat: no-repeat;
   background-size: cover;
+  background-image: url("@/assets/bg1@2x.png");
   width: 100vw;
   height: 100vh;
   .login-box {

@@ -5,12 +5,21 @@ import Layout from "@/layout/index.vue";
  */
 export const constantRoutes = [
   {
-    path: '/',
+    path: '/login',
     component: () => import('@/views/login.vue'),
   },
   {
-    path: '/index',
-    component: Layout
+    path: '',
+    component: Layout,
+    redirect: "index",
+    children: [
+      {
+        path: "index",
+        component: () => import('@/views/index.vue'),
+        name: "index",
+        meta: { title: "首页", icon: "index" },
+      }
+    ]
   },
   {
     path: "/system",
@@ -19,7 +28,7 @@ export const constantRoutes = [
     children: [
       {
         path: "user",
-        component: () => import('@/views//system/user.vue'),
+        component: () => import('@/views/system/user.vue'),
         name: "user",
         meta: { title: "用户管理" }
       }

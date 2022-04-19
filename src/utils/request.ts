@@ -3,6 +3,7 @@ import {
     getToken
 } from './auth'
 const service = axios.create()
+import { ElMessage } from 'element-plus'
 
 //请求拦截器
 service.interceptors.request.use(
@@ -20,10 +21,15 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     (response: any) => {
         if (response.status !== 200) {
-            console.log('服务器执行错误！');
+            ElMessage.error("服务器执行错误！")
         } else {
-            // 注意返回值
-            return response.data
+            if (response.data.code !== 1) {
+                ElMessage.error(response.data.msg);
+                return Promise.reject(response.data)
+            } else {
+                return response.data
+            }
+
         }
     },
     (error: any) => {
@@ -46,6 +52,7 @@ service.interceptors.response.use(
         } else {
             error.message = '连接到服务器失败，请联系管理员'
         }
+        ElMessage.error(error.message)
         return Promise.reject(error)
     }
 )
