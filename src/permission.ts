@@ -4,11 +4,12 @@ import router from './router'
 import store from "./store";
 import { getToken } from "@/utils/auth";
 import { ElMessage } from 'element-plus'
+import { RouteRecordRaw } from "vue-router";
 
 
 const whiteList = ["/login"];
 NProgress.configure({ showSpinner: false });
-router.beforeEach((to: any, from: any, next: any) => {
+router.beforeEach(async (to: any, from: any, next: any) => {
     NProgress.start();
     if (getToken()) {
         if (to.path === "/login") {
@@ -16,17 +17,23 @@ router.beforeEach((to: any, from: any, next: any) => {
             NProgress.done();
         } else {
             if (store.getters.roles.length === 0) {
-                store
-                    .dispatch("getUserInfo")
-                    .then(() => {
-                        next({ ...to, replace: true }); // hack方法 确保addRoutes已完成
-                    })
-                    .catch(err => {
-                        store.dispatch("LogOut").then(() => {
-                            ElMessage.error(err);
-                            next({ path: "/login" });
-                        });
+                try {
+                    const menuList = await store.dispatch("getUserInfo");
+                    const routes = await store.dispatch("buildRoutes", menuList);
+                    routes.forEach((route: RouteRecordRaw) => {
+                        router.addRoute(route)
                     });
+                    next({ ...to, replace: true }); // hack方法 确保addRoutes已完成
+
+                } catch (error) {
+                    store.dispatch("LogOut").then(() => {
+                        ElMessage.error(err);
+                        next({ path: "/login" });
+                    });
+                }
+
+            } else {
+                next();
             }
         }
     } else {
@@ -41,6 +48,6 @@ router.beforeEach((to: any, from: any, next: any) => {
 
 router.afterEach(() => {
     NProgress.done();
-  });
-  
+});
+
 

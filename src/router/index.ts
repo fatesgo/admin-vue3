@@ -20,20 +20,8 @@ export const constantRoutes = [
         meta: { title: "首页", icon: "index" },
       }
     ]
-  },
-  {
-    path: "/system",
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: "user",
-        component: () => import('@/views/system/user.vue'),
-        name: "user",
-        meta: { title: "用户管理" }
-      }
-    ]
-  },
+  }
+
 ]
 
 const routes: Array<RouteRecordRaw> = [

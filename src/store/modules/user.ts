@@ -25,11 +25,11 @@ const user = {
         getUserInfo({ commit }: any) {
             return new Promise((resolve, reject) => {
                 getUserInfo().then((res: any) => {
-                    const { user, roles, permissions } = res.user
+                    const { user, roles, permissions,menuList } = res.data
                     commit('SetUserInfo', user)
                     commit('SetRoles', roles)
                     commit('SetPermissions', permissions)
-                    resolve(res)
+                    resolve(menuList)
                 }).catch((error: any) => {
                     reject(error)
                 })
@@ -67,5 +67,4 @@ const user = {
         }
     }
 }
-
 export default user
